@@ -67,26 +67,14 @@
 
 
             <div class="sign-in">
-                <form action="{{ url('masyarakat/registerPost') }}" method="post">
+                <form action="{{ url('forgot/passwordPost') }}" method="post">
                 {{ csrf_field() }}
-                    <div class="group">
-                        <label for="nik" class="label">NIK</label>
-                        <input id="nik" type="text" class="input" name="nik">
-                    </div>
-                    <div class="group">
-                        <label for="nama" class="label">Nama</label>
-                        <input id="nama" type="text" class="input" name="nama">
-                    </div>
-                    <div class="group">
-                        <label for="telp" class="label">Telp</label>
-                        <input id="telp" type="text" class="input" name="telp">
-                    </div>
                     <div class="group">
                         <label for="username" class="label">Username</label>
                         <input id="username" type="text" class="input" name="username">
                     </div>
                     <div class="group">
-                        <label for="pass" class="label">Password</label>
+                        <label for="pass" class="label">New Password</label>
                         <input id="pass" type="password" class="input" name="password">
                     </div>
                     <div class="group">

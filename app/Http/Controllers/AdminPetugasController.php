@@ -8,55 +8,12 @@ use App\User;
 
 class AdminPetugasController extends Controller
 {
-    public function viewForgotPetugas($id_user)
-    {
-    	$user = User::find($id_user);
-    	$id = $user->id;
-    	$data['petugas'] = Petugas::where('id_user',$id)->first();
-    	return view('admin.forgotPetugas',$data);
-    }
-
     public function viewEditPetugas($id_user)
     {
     	$user = User::find($id_user);
     	$id = $user->id;
     	$data['petugas'] = Petugas::where('id_user',$id)->first();
     	return view('admin.editPetugas',$data);
-    }
-
-    public function forgotPetugasPost(Request $request,$id_user)
-    {
-    	$this->validate($request,[
-    		'password' => 'required|min:8',
-    		'confirmation' => 'required|same:password',
-    	]);
-
-    	$user = User::find($id_user);
-
-    	$user->password = bcrypt($request->password);
-
-    	$status = $user->update();
-
-    	if ($status) {
-
-	    	$id = $user->id;
-            $data = User::find($id);
-            $password = $data->password;
-	    	$petugas = Petugas::where('id_user',$id)->first();
-
-	    	$petugas->password = $password;
-
-	    	$saveAs = $petugas->update();
-
-    		if ($saveAs) {
-    			return redirect('admin/petugas')->with('succes','berhasil forgot password');
-    		}else{
-    			return redirect('admin/petugas/forgot')->with('error','gagal forgot password');
-    		}
-    			
-    	} else{
-    		return redirect('admin/petugas/forgot')->with('error','gagal forgot password');
-    	}
     }
 
     public function editPetugasPost(Request $request,$id_user)

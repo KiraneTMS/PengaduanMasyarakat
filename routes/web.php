@@ -35,10 +35,7 @@ Route::group(['middleware' => 'LoginMiddleware'], function(){
 	Route::post('masyarakat/registerPost', 'LoginController@registerMasyarakatPost');
 
 	Route::get('forgot/password','LoginController@viewForgot');
-	Route::get('masyarakat/forgot/{id_user}','AdminMasyarakatController@viewForgotMasyarakat');
-	Route::post('masyarakat/forgot{id_user}','AdminMasyarakatController@forgotMasyarakatPost');
-	Route::get('petugas/forgot/{id_user}','AdminPetugasController@viewForgotPetugas');
-	Route::post('petugas/forgot{id_user}','AdminPetugasController@forgotPetugasPost');
+	Route::post('forgot/passwordPost','LoginController@forgotPost');
 
 });
 

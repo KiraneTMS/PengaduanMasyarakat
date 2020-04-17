@@ -188,6 +188,73 @@ class LoginController extends Controller
         return view('login.forgotPassword');
     }
 
+    public function forgotPost(Request $request)
+    {
+        
+        $this->validate($request,[
+            'username' => 'required',
+            'password' => 'required|min:8',
+            'confirmation' => 'required|same:password',
+        ]);
 
+        $username = $request->username;
+
+        $user = User::where('username',$username)->first();
+
+        $user->password = bcrypt($request->password);
+
+        $status = $user->update();
+
+        if ($status) {
+
+            $id = $user->id;
+            $data = User::find($id);
+            $password = $data->password;
+
+            if ($data->level == 'masyarakat') {
+                $masyarakat = Masyarakat::where('id_user',$id)->first();
+
+                $masyarakat->password = $password;
+
+                $saveAs = $masyarakat->update();
+
+                if ($saveAs) {
+                    return redirect('login')->with('success','berhasil forgot password');
+                }else{
+                    return redirect('forgot/password')->with('error','gagal forgot password');
+                }   
+            }elseif($data->level == 'admin'){
+                $petugas = Petugas::where('id_user',$id)->first();
+
+                $petugas->password = $password;
+
+                $saveAs = $petugas->update();
+
+                if ($saveAs) {
+                    return redirect('login')->with('success','berhasil forgot password');
+                }else{
+                    return redirect('forgot/password')->with('error','gagal forgot password');
+                }    
+            }elseif($data->level == 'petugas'){
+                $petugas = Petugas::where('id_user',$id)->first();
+
+                $petugas->password = $password;
+
+                $saveAs = $petugas->update();
+
+                if ($saveAs) {
+                    return redirect('login')->with('success','berhasil forgot password');
+                }else{
+                    return redirect('forgot/password')->with('error','gagal forgot password');
+                }    
+            }else{               
+                return redirect('forgot/password')->with('error','username tidak ada');   
+            }
+            
+                
+        } else{
+            return redirect('forgot/password')->with('error','gagal forgot password');
+        }
+    }
 
 }

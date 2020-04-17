@@ -8,13 +8,6 @@ use App\Masyarakat;
 
 class AdminMasyarakatController extends Controller
 {
-    public function viewForgotMasyarakat($id_user)
-    {
-    	$user = User::find($id_user);
-    	$id = $user->id;
-    	$data['masyarakat'] = Masyarakat::where('id_user',$id)->first();
-    	return view('admin.forgotMasyarakat',$data);
-    }
 
     public function viewEditMasyarakat($id_user)
     {
@@ -22,41 +15,6 @@ class AdminMasyarakatController extends Controller
     	$id = $user->id;
     	$data['masyarakat'] = Masyarakat::where('id_user',$id)->first();
     	return view('admin.editMasyarakat',$data);
-    }
-
-    public function forgotMasyarakatPost(Request $request,$id_user)
-    {
-    	$this->validate($request,[
-    		'password' => 'required|min:8',
-    		'confirmation' => 'required|same:password',
-    	]);
-
-    	$user = User::find($id_user);
-
-    	$user->password = bcrypt($request->password);
-
-    	$status = $user->update();
-
-    	if ($status) {
-
-	    	$id = $user->id;
-	    	$data = User::find($id);
-	    	$password = $data->password;
-	    	$masyarakat = Masyarakat::where('id_user',$id)->first();
-
-	    	$masyarakat->password = $password;
-
-	    	$saveAs = $masyarakat->update();
-
-    		if ($saveAs) {
-    			return redirect('admin/masyarakat')->with('succes','berhasil forgot password');
-    		}else{
-    			return redirect('admin/masyarakat/forgot')->with('error','gagal forgot password');
-    		}
-    			
-    	} else{
-    		return redirect('admin/masyarakat/forgot')->with('error','gagal forgot password');
-    	}
     }
 
     public function editMasyarakatPost(Request $request,$id_user)
